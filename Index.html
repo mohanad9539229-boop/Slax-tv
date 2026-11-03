@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SLAX TV OS</title>
+    <style>
+        :root {
+            --bg-color: #030303;
+            --card-bg: rgba(18, 18, 20, 0.75);
+            --accent-red: #ff0033;
+            --accent-glow: rgba(255, 0, 51, 0.4);
+            --text-main: #ffffff;
+            --text-muted: #888892;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            padding: 40px 60px;
+            background-image: radial-gradient(circle at 10% 20%, rgba(255, 0, 51, 0.05) 0%, transparent 40%);
+        }
+
+        /* رأس القائمة */
+        .tv-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-area h1 {
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            color: var(--text-main);
+        }
+
+        .logo-area h1 span {
+            color: var(--accent-red);
+            text-shadow: 0 0 15px var(--accent-glow);
+        }
+
+        .status-bar {
+            display: flex;
+            gap: 20px;
+            font-size: 16px;
+            color: var(--text-muted);
+        }
+
+        /* شبكة التطبيقات (Grid) */
+        .apps-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+            flex-grow: 1;
+            align-content: start;
+        }
+
+        .app-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            backdrop-filter: blur(12px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .app-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255,0,51,0.1), transparent);
+            opacity: 0;
+            transition: opacity 0.25s;
+        }
+
+        .app-card:hover, .app-card:focus {
+            border-color: var(--accent-red);
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 10px 30px var(--accent-glow);
+            outline: none;
+        }
+
+        .app-card:hover::before {
+            opacity: 1;
+        }
+
+        .app-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+        }
+
+        .app-title {
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        /* نافذة المشغل / التطبيق المنبثقة (Modal) */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.92);
+            z-index: 1000;
+            padding: 40px;
+            flex-direction: column;
+            backdrop-filter: blur(20px);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 22px;
+            font-weight: bold;
+            color: var(--text-main);
+        }
+
+        .close-btn {
+            background: var(--accent-red);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+
+        .close-btn:hover {
+            opacity: 0.85;
+            transform: scale(1.05);
+        }
+
+        .browser-container {
+            flex-grow: 1;
+            background: #111;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
+
+        .browser-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .fallback-msg {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #0a0a0c;
+            text-align: center;
+            padding: 20px;
+            z-index: 1;
+        }
+
+        .fallback-msg p {
+            margin-bottom: 15px;
+            color: var(--text-muted);
+            font-size: 16px;
+        }
+
+        .external-link {
+            background: var(--accent-red);
+            color: white;
+            text-decoration: none;
+            padding: 12px 25px;
+            border-radius: 10px;
+            font-weight: bold;
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- الهيدر -->
+    <div class="tv-header">
+        <div class="logo-area">
+            <h1>SLAX<span>TV</span> OS</h1>
+        </div>
+        <div class="status-bar">
+            <span id="clock">00:00</span>
+            <span>⚡ النظام جاهز</span>
+        </div>
+    </div>
+
+    <!-- شبكة التطبيقات -->
+    <div class="apps-grid">
+        <!-- تطبيق موقع عشق (مسلسلات تركية) -->
+        <div class="app-card" onclick="openApp('عشق - الحفرة (Çukur)', 'https://e.3cktv.com/video/cukur-dubbed-ep-54/')">
+            <div class="app-icon">🎬</div>
+            <div class="app-title">موقع عشق (تركيا)</div>
+        </div>
+
+        <!-- تطبيق يوتيوب -->
+        <div class="app-card" onclick="openApp('يوتيوب', 'https://www.youtube.com/embed/live_stream?channel=...')">
+            <div class="app-icon">▶️</div>
+            <div class="app-title">يوتيوب</div>
+        </div>
+
+        <!-- تطبيق نتفليكس -->
+        <div class="app-card" onclick="openApp('نتفليكس', 'https://www.netflix.com')">
+            <div class="app-icon">🍿</div>
+            <div class="app-title">نتفليكس</div>
+        </div>
+
+        <!-- تطبيق سكريبتات / أدوات -->
+        <div class="app-card" onclick="alert('قسم السكريبتات والأدوات قيد التطوير بواسطة سلاكس!')">
+            <div class="app-icon">⚡</div>
+            <div class="app-title">SLAX Hub</div>
+        </div>
+
+        <!-- ألعاب / تصفح -->
+        <div class="app-card" onclick="openApp('متصفح الويب', 'https://www.google.com')">
+            <div class="app-icon">🌐</div>
+            <div class="app-title">متصفح الويب</div>
+        </div>
+
+        <div class="app-card" onclick="alert('النظام يعمل بثبات OLED Dark Mode.')">
+            <div class="app-icon">⚙️</div>
+            <div class="app-title">الإعدادات</div>
+        </div>
+    </div>
+
+    <!-- نافذة عرض التطبيق (Modal) -->
+    <div class="modal-overlay" id="appModal">
+        <div class="modal-header">
+            <div class="modal-title" id="modalTitle">عنوان التطبيق</div>
+            <button class="close-btn" onclick="closeApp()">إغلاق ✕</button>
+        </div>
+        <div class="browser-container" id="browserContainer">
+            <!-- رسالة تحذيرية في حال منع الموقع للعرض داخل الـ Iframe -->
+            <div class="fallback-msg" id="fallbackMsg">
+                <p>بعض مواقع البث تمنع العرض المباشر داخل النوافذ للحماية.</p>
+                <a id="directLink" href="#" target="_blank" class="external-link">افتح الموقع بشاشة كاملة ↗</a>
+            </div>
+            <iframe id="appFrame" src="" onload="hideFallback()"></iframe>
+        </div>
+    </div>
+
+    <script>
+        // تحديث الساعة
+        setInterval(() => {
+            const now = new Date();
+            document.getElementById('clock').innerText = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+        }, 1000);
+
+        // فتح التطبيق
+        function openApp(title, url) {
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('directLink').href = url;
+            document.getElementById('fallbackMsg').style.display = 'flex';
+            document.getElementById('appFrame').src = url;
+            document.getElementById('appModal').style.display = 'flex';
+        }
+
+        // إخفاء التحذير إذا نجح تحميل الصفحة داخل الإطار
+        function hideFallback() {
+            setTimeout(() => {
+                // ملاحظة: إذا حظر الموقع الـ iframe سيظهر زر الفتح الخارجي
+                document.getElementById('fallbackMsg').style.display = 'none';
+            }, 1000);
+        }
+
+        // إغلاق التطبيق
+        function closeApp() {
+            document.getElementById('appModal').style.display = 'none';
+            document.getElementById('appFrame').src = '';
+        }
+    </script>
+</body>
+</html>
