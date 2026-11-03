@@ -10,8 +10,8 @@
             --color-dark-crimson: #8B0000;
             --color-neon-red: #FF1E1E;
             --text-primary: #FFFFFF;
-            --text-secondary: #A0A0A0;
-            --glass-fallback: rgba(10, 10, 10, 0.92);
+            --text-secondary: #D0D0D0;
+            --glass-fallback: rgba(10, 10, 10, 0.85);
             --card-width: 180px;
             --card-height: 270px;
         }
@@ -25,9 +25,11 @@
 
         body {
             background-color: var(--bg-oled-black);
-            background-image: linear-gradient(rgba(5, 5, 5, 0.85), rgba(5, 5, 5, 0.85)), url('https://i.ibb.co/27tC8YZR/IMG-7795.jpg');
+            /* تحسين وضوح صورة الخلفية لجعلها باينة بشكل واضح */
+            background-image: linear-gradient(to bottom, rgba(5, 5, 5, 0.4), rgba(5, 5, 5, 0.75)), url('https://i.ibb.co/27tC8YZR/IMG-7795.jpg');
             background-size: cover;
-            background-position: center;
+            background-position: center center;
+            background-repeat: no-repeat;
             background-attachment: fixed;
             color: var(--text-primary);
             font-family: system-ui, -apple-system, sans-serif;
@@ -55,15 +57,15 @@
             justify-content: space-between;
             padding: 0 40px;
             background: var(--glass-fallback);
-            border-bottom: 1px solid rgba(255, 30, 30, 0.2);
+            border-bottom: 1px solid rgba(255, 30, 30, 0.3);
             z-index: 1000;
         }
 
-        @supports (-webkit-backdrop-filter: blur(10px)) or (backdrop-filter: blur(10px)) {
+        @supports (-webkit-backdrop-filter: blur(8px)) or (backdrop-filter: blur(8px)) {
             .navbar {
-                background: rgba(10, 10, 10, 0.85);
-                -webkit-backdrop-filter: blur(10px);
-                backdrop-filter: blur(10px);
+                background: rgba(10, 10, 10, 0.75);
+                -webkit-backdrop-filter: blur(8px);
+                backdrop-filter: blur(8px);
             }
         }
 
@@ -87,7 +89,7 @@
         }
 
         .nav-item a {
-            color: var(--text-secondary);
+            color: var(--text-primary);
             text-decoration: none;
             font-size: 15px;
             padding: 8px 14px;
@@ -95,12 +97,13 @@
             display: flex;
             align-items: center;
             gap: 6px;
+            background: rgba(0,0,0,0.4);
             transition: color 0.2s, background 0.2s;
         }
 
         .nav-item a.active, .nav-item a.is-focused, .nav-item a:hover {
             color: var(--text-primary);
-            background: rgba(255, 30, 30, 0.2);
+            background: rgba(255, 30, 30, 0.3);
             outline: 2px solid var(--color-neon-red);
         }
 
@@ -113,8 +116,8 @@
         .search-input {
             width: 100%;
             padding: 8px 16px 8px 36px;
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 30, 30, 0.3);
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 30, 30, 0.4);
             border-radius: 20px;
             color: var(--text-primary);
             outline: none;
@@ -142,11 +145,11 @@
         /* Hero Banner */
         .hero {
             position: relative;
-            height: 65vh;
+            height: 60vh;
             margin-top: 70px;
             display: flex;
             align-items: flex-end;
-            padding: 50px 40px;
+            padding: 40px;
             background-size: cover;
             background-position: center top;
         }
@@ -154,7 +157,7 @@
         .hero-overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(to top, var(--bg-oled-black) 5%, rgba(5,5,5,0.6) 50%, transparent 100%);
+            background: linear-gradient(to top, rgba(5,5,5,0.9) 10%, rgba(5,5,5,0.4) 60%, transparent 100%);
         }
 
         .hero-content {
@@ -164,10 +167,10 @@
         }
 
         .hero-title {
-            font-size: 40px;
+            font-size: 38px;
             font-weight: 800;
             margin-bottom: 12px;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+            text-shadow: 0 2px 10px rgba(0,0,0,0.9);
         }
 
         .hero-meta {
@@ -190,6 +193,7 @@
         .btn-group {
             display: flex;
             gap: 15px;
+            flex-wrap: wrap;
         }
 
         .btn {
@@ -211,10 +215,9 @@
             box-shadow: 0 0 12px rgba(255, 30, 30, 0.4);
         }
 
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.12);
-            color: var(--text-primary);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+        .btn-youtube {
+            background: #FF0000;
+            color: #FFFFFF;
         }
 
         .btn-external {
@@ -240,6 +243,10 @@
             margin-bottom: 15px;
             border-right: 4px solid var(--color-neon-red);
             padding-right: 10px;
+            background: rgba(0,0,0,0.5);
+            display: inline-flex;
+            padding-left: 15px;
+            border-radius: 0 4px 4px 0;
         }
 
         .row-title {
@@ -262,10 +269,12 @@
             border-radius: 8px;
             overflow: hidden;
             position: relative;
-            background: #151515;
+            background: rgba(20, 20, 20, 0.8);
+            border: 1px solid rgba(255,255,255,0.1);
             transition: transform 0.2s, border 0.2s;
             will-change: transform;
             transform: translateZ(0);
+            cursor: pointer;
         }
 
         .media-card img {
@@ -279,7 +288,7 @@
             bottom: 0;
             inset-x: 0;
             padding: 8px;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0,0,0,0.85);
             font-size: 12px;
             text-align: center;
             white-space: nowrap;
@@ -327,6 +336,16 @@
             align-items: center;
             gap: 6px;
         }
+
+        .external-link-btn {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            color: #007bff;
+            font-size: 14px;
+            text-decoration: underline;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -348,19 +367,21 @@
                     <svg class="svg-icon" viewBox="0 0 24 24"><path d="M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4H8l2 4H7L5 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4h-4z"/></svg> الأفلام
                 </a>
             </li>
+            <!-- فتح موقع يوتيوب المباشر -->
             <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <svg class="svg-icon" viewBox="0 0 24 24"><path d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h5v2h8v-2h5c1.1 0 1.99-.9 1.99-2L23 5c0-1.1-.9-2-2-2zm0 14H3V5h18v12z"/></svg> المسلسلات
+                <a href="https://www.youtube.com" target="_blank" class="nav-link">
+                    <svg class="svg-icon" viewBox="0 0 24 24" style="fill:#FF0000;"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg> فتح YouTube
                 </a>
             </li>
+            <!-- فتح موقع 3cktv المباشر -->
             <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <svg class="svg-icon" viewBox="0 0 24 24" style="fill:#FF0000;"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg> يوتيوب
+                <a href="https://e.3cktv.com/video/cukur-dubbed-ep-54/" target="_blank" class="nav-link">
+                    <svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg> موقع 3cktv
                 </a>
             </li>
         </ul>
         <div class="search-box">
-            <input type="text" class="search-input" id="searchInput" placeholder="بحث دقيق عن أعمال..." autocomplete="off">
+            <input type="text" class="search-input" id="searchInput" placeholder="بحث دقيق..." autocomplete="off">
             <div class="search-dropdown" id="searchDropdown"></div>
         </div>
     </nav>
@@ -382,8 +403,11 @@
                 <button class="btn btn-primary" id="btnWatch">
                     <svg class="svg-icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg> مشاهدة الآن
                 </button>
+                <button class="btn btn-youtube" id="btnYouTubeDirect">
+                    <svg class="svg-icon" viewBox="0 0 24 24" style="fill:#FFF;"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg> فتح يوتيوب
+                </button>
                 <button class="btn btn-external" id="btnCukur">
-                    <svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg> مسلسل الحفرة (3cktv)
+                    <svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg> الحفرة (3cktv)
                 </button>
             </div>
         </div>
@@ -395,7 +419,7 @@
         <section class="section-row">
             <div class="row-header">
                 <svg class="svg-icon" viewBox="0 0 24 24" style="fill:#FF0000; width:24px; height:24px;"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-                <h2 class="row-title">مقاطع يوتيوب السينمائية</h2>
+                <h2 class="row-title">مقاطع يوتيوب المختارة</h2>
             </div>
             <div class="media-slider" id="youtubeRow"></div>
         </section>
@@ -417,25 +441,21 @@
                 <svg class="svg-icon" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
                 إغلاق المشغل
             </div>
+            <a id="externalDirectLink" href="#" target="_blank" class="external-link-btn">فتح الرابط المباشر في صفحة خارجية ↗</a>
             <iframe id="playerIframe" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>
         </div>
     </div>
 
     <script>
-        /**
-         * Slax TV Engine - Optimized for PS4 WebKit
-         */
         const TMDB_API_KEY = 'YOUR_TMDB_API_KEY';
         const BASE_URL = 'https://api.themoviedb.org/3';
         const IMAGE_BASE = 'https://image.tmdb.org/t/p/w500';
 
-        // Sample YouTube Content Integration
         const youtubeItems = [
             { id: 'dQw4w9WgXcQ', title: 'العرض التشويقي الأول', poster: 'https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg' },
             { id: 'L_LUpnjgPso', title: 'أفضل اللحظات السينمائية', poster: 'https://img.youtube.com/vi/L_LUpnjgPso/hqdefault.jpg' }
         ];
 
-        // Direct External Video Links (e.g. 3cktv)
         const CUKUR_54_URL = 'https://e.3cktv.com/video/cukur-dubbed-ep-54/';
 
         async function fetchWithCache(url, cacheKey, ttlMinutes = 60) {
@@ -463,9 +483,14 @@
                 renderTMDBRow(trendingData.results, 'trendingRow');
             }
 
-            // Direct link button for Çukur (3cktv)
+            // زر فتح يوتيوب المباشر
+            document.getElementById('btnYouTubeDirect').onclick = () => {
+                window.open('https://www.youtube.com', '_blank');
+            };
+
+            // زر فتح موقع 3cktv لمسلسل الحفرة
             document.getElementById('btnCukur').onclick = () => {
-                openExternalPlayer(CUKUR_54_URL);
+                openPlayer(CUKUR_54_URL, true);
             };
 
             setupSpatialNavigation();
@@ -485,7 +510,7 @@
         function renderYouTubeRow() {
             const container = document.getElementById('youtubeRow');
             container.innerHTML = youtubeItems.map(item => `
-                <div class="media-card nav-focusable" tabindex="0" onclick="openPlayer('https://www.youtube.com/embed/${item.id}')">
+                <div class="media-card nav-focusable" tabindex="0" onclick="openPlayer('https://www.youtube.com/embed/${item.id}', true)">
                     <img src="${item.poster}" alt="${item.title}" loading="lazy">
                     <div class="card-info">${item.title}</div>
                 </div>
@@ -502,17 +527,14 @@
             `).join('');
         }
 
-        function openPlayer(embedUrl) {
+        function openPlayer(url, isExternal = false) {
             const modal = document.getElementById('videoModal');
             const iframe = document.getElementById('playerIframe');
-            iframe.src = embedUrl;
-            modal.classList.add('active');
-        }
-
-        function openExternalPlayer(url) {
-            const modal = document.getElementById('videoModal');
-            const iframe = document.getElementById('playerIframe');
+            const extBtn = document.getElementById('externalDirectLink');
+            
             iframe.src = url;
+            extBtn.href = url;
+            extBtn.style.display = isExternal ? 'block' : 'none';
             modal.classList.add('active');
         }
 
@@ -523,7 +545,6 @@
             modal.classList.remove('active');
         };
 
-        // Spatial Focus Management for PS4 Controller
         function setupSpatialNavigation() {
             let focusables = document.querySelectorAll('.nav-focusable, .btn, .search-input, .nav-link');
             let currentIndex = 0;
@@ -551,7 +572,6 @@
             });
         }
 
-        // Gamepad API Loop
         function setupGamepadPolling() {
             let lastAxisTime = 0;
             function pollGamepad() {
