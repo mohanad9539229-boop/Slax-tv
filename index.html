@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SLAX TV - السينما بين يديك</title>
+    <title>SLAX TV - منصة الترفيه والسينما</title>
     <style>
         :root {
             --bg-oled-black: #050505;
@@ -25,10 +25,22 @@
 
         body {
             background-color: var(--bg-oled-black);
+            background-image: linear-gradient(rgba(5, 5, 5, 0.85), rgba(5, 5, 5, 0.85)), url('https://i.ibb.co/27tC8YZR/IMG-7795.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
             color: var(--text-primary);
             font-family: system-ui, -apple-system, sans-serif;
             overflow-x: hidden;
-            background-image: radial-gradient(circle at top center, rgba(139, 0, 0, 0.15) 0%, transparent 70%);
+        }
+
+        /* SVG Icon styling */
+        .svg-icon {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+            vertical-align: middle;
+            display: inline-block;
         }
 
         /* Navbar Layout */
@@ -49,7 +61,7 @@
 
         @supports (-webkit-backdrop-filter: blur(10px)) or (backdrop-filter: blur(10px)) {
             .navbar {
-                background: rgba(10, 10, 10, 0.75);
+                background: rgba(10, 10, 10, 0.85);
                 -webkit-backdrop-filter: blur(10px);
                 backdrop-filter: blur(10px);
             }
@@ -61,40 +73,46 @@
             color: var(--text-primary);
             letter-spacing: 2px;
             text-shadow: 0 0 10px rgba(255, 30, 30, 0.6);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .logo span { color: var(--color-neon-red); }
 
         .nav-links {
             display: flex;
-            gap: 25px;
+            gap: 20px;
             list-style: none;
         }
 
         .nav-item a {
             color: var(--text-secondary);
             text-decoration: none;
-            font-size: 16px;
-            padding: 8px 12px;
+            font-size: 15px;
+            padding: 8px 14px;
             border-radius: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
             transition: color 0.2s, background 0.2s;
         }
 
         .nav-item a.active, .nav-item a.is-focused, .nav-item a:hover {
             color: var(--text-primary);
-            background: rgba(255, 30, 30, 0.15);
+            background: rgba(255, 30, 30, 0.2);
             outline: 2px solid var(--color-neon-red);
         }
 
-        /* Live Search Component */
+        /* Search Component */
         .search-box {
             position: relative;
-            width: 280px;
+            width: 260px;
         }
 
         .search-input {
             width: 100%;
-            padding: 8px 16px;
+            padding: 8px 16px 8px 36px;
             background: rgba(255, 255, 255, 0.08);
             border: 1px solid rgba(255, 30, 30, 0.3);
             border-radius: 20px;
@@ -121,14 +139,14 @@
             z-index: 1001;
         }
 
-        /* Hero Banner Component */
+        /* Hero Banner */
         .hero {
             position: relative;
-            height: 70vh;
+            height: 65vh;
             margin-top: 70px;
             display: flex;
             align-items: flex-end;
-            padding: 60px 40px;
+            padding: 50px 40px;
             background-size: cover;
             background-position: center top;
         }
@@ -142,11 +160,11 @@
         .hero-content {
             position: relative;
             z-index: 2;
-            max-width: 600px;
+            max-width: 650px;
         }
 
         .hero-title {
-            font-size: 42px;
+            font-size: 40px;
             font-weight: 800;
             margin-bottom: 12px;
             text-shadow: 0 2px 10px rgba(0,0,0,0.8);
@@ -154,6 +172,7 @@
 
         .hero-meta {
             display: flex;
+            align-items: center;
             gap: 15px;
             color: var(--text-secondary);
             font-size: 14px;
@@ -163,6 +182,9 @@
         .badge-rating {
             color: #FFD700;
             font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
 
         .btn-group {
@@ -171,16 +193,16 @@
         }
 
         .btn {
-            padding: 12px 28px;
+            padding: 12px 24px;
             border-radius: 6px;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: bold;
             cursor: pointer;
             border: none;
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: transform 0.2s;
         }
 
         .btn-primary {
@@ -190,9 +212,15 @@
         }
 
         .btn-secondary {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.12);
             color: var(--text-primary);
             border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-external {
+            background: #0056b3;
+            color: #ffffff;
+            border: 1px solid #007bff;
         }
 
         .btn.is-focused, .btn:hover {
@@ -200,16 +228,22 @@
             outline: 3px solid #FFFFFF;
         }
 
-        /* Media Rows Layout */
+        /* Rows Architecture */
         .section-row {
             padding: 20px 40px;
         }
 
-        .row-title {
-            font-size: 20px;
+        .row-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
             margin-bottom: 15px;
             border-right: 4px solid var(--color-neon-red);
             padding-right: 10px;
+        }
+
+        .row-title {
+            font-size: 20px;
         }
 
         .media-slider {
@@ -240,6 +274,19 @@
             object-fit: cover;
         }
 
+        .media-card .card-info {
+            position: absolute;
+            bottom: 0;
+            inset-x: 0;
+            padding: 8px;
+            background: rgba(0,0,0,0.8);
+            font-size: 12px;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
         .media-card.is-focused, .media-card:hover {
             transform: translate3d(0, 0, 0) scale(1.06);
             border: 2px solid var(--color-neon-red);
@@ -247,7 +294,7 @@
             z-index: 10;
         }
 
-        /* Custom Modal Player */
+        /* Modal Player */
         .modal-player {
             position: fixed;
             inset: 0;
@@ -261,8 +308,8 @@
         .modal-player.active { display: flex; }
 
         .iframe-container {
-            width: 85%;
-            height: 80%;
+            width: 88%;
+            height: 82%;
             background: #000;
             border: 2px solid var(--color-dark-crimson);
             box-shadow: 0 0 20px rgba(255, 30, 30, 0.3);
@@ -274,8 +321,11 @@
             top: -40px;
             right: 0;
             color: var(--text-primary);
-            font-size: 24px;
+            font-size: 16px;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
     </style>
 </head>
@@ -283,12 +333,31 @@
 
     <!-- Navbar -->
     <nav class="navbar">
-        <div class="logo">SLAX <span>TV</span></div>
+        <div class="logo">
+            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h5v2h8v-2h5c1.1 0 1.99-.9 1.99-2L23 5c0-1.1-.9-2-2-2zm0 14H3V5h18v12z"/></svg>
+            SLAX <span>TV</span>
+        </div>
         <ul class="nav-links">
-            <li class="nav-item"><a href="#" class="nav-link active">الرئيسية</a></li>
-            <li class="nav-item"><a href="#" class="nav-link">الأفلام</a></li>
-            <li class="nav-item"><a href="#" class="nav-link">المسلسلات</a></li>
-            <li class="nav-item"><a href="#" class="nav-link">المفضلة</a></li>
+            <li class="nav-item">
+                <a href="#" class="nav-link active">
+                    <svg class="svg-icon" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg> الرئيسي
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <svg class="svg-icon" viewBox="0 0 24 24"><path d="M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4H8l2 4H7L5 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4h-4z"/></svg> الأفلام
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <svg class="svg-icon" viewBox="0 0 24 24"><path d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h5v2h8v-2h5c1.1 0 1.99-.9 1.99-2L23 5c0-1.1-.9-2-2-2zm0 14H3V5h18v12z"/></svg> المسلسلات
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <svg class="svg-icon" viewBox="0 0 24 24" style="fill:#FF0000;"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg> يوتيوب
+                </a>
+            </li>
         </ul>
         <div class="search-box">
             <input type="text" class="search-input" id="searchInput" placeholder="بحث دقيق عن أعمال..." autocomplete="off">
@@ -300,35 +369,54 @@
     <header class="hero" id="heroBanner">
         <div class="hero-overlay"></div>
         <div class="hero-content">
-            <h1 class="hero-title" id="heroTitle">جاري التحميل...</h1>
+            <h1 class="hero-title" id="heroTitle">جاري تحميل المحتوى...</h1>
             <div class="hero-meta">
-                <span class="badge-rating" id="heroRating">★ --</span>
+                <span class="badge-rating">
+                    <svg class="svg-icon" viewBox="0 0 24 24" style="fill:#FFD700;"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                    <span id="heroRating">--</span>
+                </span>
                 <span id="heroYear">2026</span>
                 <span id="heroCategory">سينما أكشن</span>
             </div>
             <div class="btn-group">
-                <button class="btn btn-primary" id="btnWatch">▶ مشاهدة الآن</button>
-                <button class="btn btn-secondary" id="btnFav">+ المفضلة</button>
+                <button class="btn btn-primary" id="btnWatch">
+                    <svg class="svg-icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg> مشاهدة الآن
+                </button>
+                <button class="btn btn-external" id="btnCukur">
+                    <svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg> مسلسل الحفرة (3cktv)
+                </button>
             </div>
         </div>
     </header>
 
     <!-- Media Sections -->
     <main>
+        <!-- YouTube Section -->
         <section class="section-row">
-            <h2 class="row-title">الأكثر مشاهدة اليوم</h2>
-            <div class="media-slider" id="trendingRow"></div>
+            <div class="row-header">
+                <svg class="svg-icon" viewBox="0 0 24 24" style="fill:#FF0000; width:24px; height:24px;"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                <h2 class="row-title">مقاطع يوتيوب السينمائية</h2>
+            </div>
+            <div class="media-slider" id="youtubeRow"></div>
         </section>
+
+        <!-- TMDB Rows -->
         <section class="section-row">
-            <h2 class="row-title">أحدث الإصدارات السينمائية</h2>
-            <div class="media-slider" id="latestRow"></div>
+            <div class="row-header">
+                <svg class="svg-icon" viewBox="0 0 24 24" style="fill:#FF1E1E; width:22px; height:22px;"><path d="M13.5 1.5c.9 0 1.5.6 1.5 1.5v3.3l4.2-2.4c.8-.5 1.8-.2 2.2.6.5.8.2 1.8-.6 2.2L16.5 9l4.3 2.5c.8.5 1.1 1.5.6 2.3-.5.8-1.5 1.1-2.3.6L15 12v5c0 1.1-.9 2-2 2h-2c-1.1 0-2-.9-2-2v-5l-4.1 2.4c-.8.5-1.8.2-2.3-.6-.5-.8-.2-1.8.6-2.3L7.5 9 3.2 6.5c-.8-.5-1.1-1.5-.6-2.2.5-.8 1.5-1.1 2.2-.6L9 6.2V3c0-.9.6-1.5 1.5-1.5h3z"/></svg>
+                <h2 class="row-title">الأكثر مشاهدة اليوم</h2>
+            </div>
+            <div class="media-slider" id="trendingRow"></div>
         </section>
     </main>
 
     <!-- Modal Video Player -->
     <div class="modal-player" id="videoModal">
         <div class="iframe-container">
-            <span class="close-modal" id="closeModal">&times; إغلاق (Circle)</span>
+            <div class="close-modal" id="closeModal">
+                <svg class="svg-icon" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                إغلاق المشغل
+            </div>
             <iframe id="playerIframe" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>
         </div>
     </div>
@@ -341,14 +429,20 @@
         const BASE_URL = 'https://api.themoviedb.org/3';
         const IMAGE_BASE = 'https://image.tmdb.org/t/p/w500';
 
-        // Local Storage Caching Strategy (30 reqs/10s rate limit defense)
+        // Sample YouTube Content Integration
+        const youtubeItems = [
+            { id: 'dQw4w9WgXcQ', title: 'العرض التشويقي الأول', poster: 'https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg' },
+            { id: 'L_LUpnjgPso', title: 'أفضل اللحظات السينمائية', poster: 'https://img.youtube.com/vi/L_LUpnjgPso/hqdefault.jpg' }
+        ];
+
+        // Direct External Video Links (e.g. 3cktv)
+        const CUKUR_54_URL = 'https://e.3cktv.com/video/cukur-dubbed-ep-54/';
+
         async function fetchWithCache(url, cacheKey, ttlMinutes = 60) {
             const cached = localStorage.getItem(cacheKey);
             if (cached) {
                 const { timestamp, data } = JSON.parse(cached);
-                if (Date.now() - timestamp < ttlMinutes * 60 * 1000) {
-                    return data;
-                }
+                if (Date.now() - timestamp < ttlMinutes * 60 * 1000) return data;
             }
             try {
                 const response = await fetch(url);
@@ -356,23 +450,23 @@
                 localStorage.setItem(cacheKey, JSON.stringify({ timestamp: Date.now(), data }));
                 return data;
             } catch (err) {
-                console.error("Fetch failure:", err);
                 return null;
             }
         }
 
-        // Initialize Application
         async function initApp() {
+            renderYouTubeRow();
+
             const trendingData = await fetchWithCache(`${BASE_URL}/trending/movie/day?api_key=${TMDB_API_KEY}&language=ar-SA`, 'slax_trending', 120);
             if (trendingData && trendingData.results.length > 0) {
                 setupHero(trendingData.results[0]);
-                renderRow(trendingData.results, 'trendingRow');
+                renderTMDBRow(trendingData.results, 'trendingRow');
             }
 
-            const latestData = await fetchWithCache(`${BASE_URL}/movie/now_playing?api_key=${TMDB_API_KEY}&language=ar-SA`, 'slax_latest', 120);
-            if (latestData && latestData.results) {
-                renderRow(latestData.results, 'latestRow');
-            }
+            // Direct link button for Çukur (3cktv)
+            document.getElementById('btnCukur').onclick = () => {
+                openExternalPlayer(CUKUR_54_URL);
+            };
 
             setupSpatialNavigation();
             setupGamepadPolling();
@@ -383,30 +477,42 @@
             const backdrop = item.backdrop_path ? `https://image.tmdb.org/t/p/original${item.backdrop_path}` : '';
             hero.style.backgroundImage = `url(${backdrop})`;
             document.getElementById('heroTitle').innerText = item.title || item.name;
-            document.getElementById('heroRating').innerText = `★ ${item.vote_average.toFixed(1)}`;
+            document.getElementById('heroRating').innerText = item.vote_average.toFixed(1);
             document.getElementById('heroYear').innerText = (item.release_date || '').split('-')[0] || '2026';
-            
-            document.getElementById('btnWatch').onclick = () => openPlayer(item.id);
+            document.getElementById('btnWatch').onclick = () => openPlayer(`https://vidsrc.to/embed/movie/${item.id}`);
         }
 
-        function renderRow(items, elementId) {
-            const container = document.getElementById(elementId);
-            container.innerHTML = items.map(item => `
-                <div class="media-card nav-focusable" tabindex="0" data-id="${item.id}">
-                    <img src="${item.poster_path ? IMAGE_BASE + item.poster_path : ''}" alt="${item.title}" loading="lazy">
+        function renderYouTubeRow() {
+            const container = document.getElementById('youtubeRow');
+            container.innerHTML = youtubeItems.map(item => `
+                <div class="media-card nav-focusable" tabindex="0" onclick="openPlayer('https://www.youtube.com/embed/${item.id}')">
+                    <img src="${item.poster}" alt="${item.title}" loading="lazy">
+                    <div class="card-info">${item.title}</div>
                 </div>
             `).join('');
-
-            container.querySelectorAll('.media-card').forEach(card => {
-                card.addEventListener('click', () => openPlayer(card.dataset.id));
-            });
         }
 
-        // Modal Controls
-        function openPlayer(movieId) {
+        function renderTMDBRow(items, elementId) {
+            const container = document.getElementById(elementId);
+            container.innerHTML = items.map(item => `
+                <div class="media-card nav-focusable" tabindex="0" onclick="openPlayer('https://vidsrc.to/embed/movie/${item.id}')">
+                    <img src="${item.poster_path ? IMAGE_BASE + item.poster_path : ''}" alt="${item.title}" loading="lazy">
+                    <div class="card-info">${item.title || item.name}</div>
+                </div>
+            `).join('');
+        }
+
+        function openPlayer(embedUrl) {
             const modal = document.getElementById('videoModal');
             const iframe = document.getElementById('playerIframe');
-            iframe.src = `https://vidsrc.to/embed/movie/${movieId}`;
+            iframe.src = embedUrl;
+            modal.classList.add('active');
+        }
+
+        function openExternalPlayer(url) {
+            const modal = document.getElementById('videoModal');
+            const iframe = document.getElementById('playerIframe');
+            iframe.src = url;
             modal.classList.add('active');
         }
 
@@ -417,35 +523,7 @@
             modal.classList.remove('active');
         };
 
-        // Live Search Debounce Engine
-        let debounceTimer;
-        document.getElementById('searchInput').addEventListener('input', (e) => {
-            clearTimeout(debounceTimer);
-            const query = e.target.value.trim();
-            if (query.length < 2) {
-                document.getElementById('searchDropdown').style.display = 'none';
-                return;
-            }
-            debounceTimer = setTimeout(async () => {
-                const res = await fetch(`${BASE_URL}/search/multi?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(query)}&language=ar-SA`);
-                const data = await res.json();
-                if (data.results) {
-                    const dropdown = document.getElementById('searchDropdown');
-                    dropdown.innerHTML = data.results.slice(0, 5).map(item => `
-                        <div style="padding: 10px; display: flex; gap: 10px; align-items: center; border-bottom: 1px solid #222;" onclick="openPlayer(${item.id})">
-                            <img src="${item.poster_path ? IMAGE_BASE + item.poster_path : ''}" style="width: 40px; height: 60px; object-fit: cover;">
-                            <div>
-                                <div style="font-weight: bold; font-size: 14px;">${item.title || item.name}</div>
-                                <div style="font-size: 12px; color: #888;">${(item.release_date || item.first_air_date || '').split('-')[0]}</div>
-                            </div>
-                        </div>
-                    `).join('');
-                    dropdown.style.display = 'block';
-                }
-            }, 350);
-        });
-
-        // Spatial Focus Management
+        // Spatial Focus Management for PS4 Controller
         function setupSpatialNavigation() {
             let focusables = document.querySelectorAll('.nav-focusable, .btn, .search-input, .nav-link');
             let currentIndex = 0;
@@ -473,7 +551,7 @@
             });
         }
 
-        // Gamepad API Loop for PS4 DualShock Controller
+        // Gamepad API Loop
         function setupGamepadPolling() {
             let lastAxisTime = 0;
             function pollGamepad() {
