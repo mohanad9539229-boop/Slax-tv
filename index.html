@@ -1,311 +1,260 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SLAX TV OS</title>
-    <style>
-        :root {
-            --bg-color: #030303;
-            --card-bg: rgba(18, 18, 20, 0.75);
-            --accent-red: #ff0033;
-            --accent-glow: rgba(255, 0, 51, 0.4);
-            --text-main: #ffffff;
-            --text-muted: #888892;
-        }
+<meta charset="UTF-8">
+<title>LUXE TV</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;outline:none}
+html,body{width:100%;height:100%;overflow:hidden;color:#f6efdc;font-family:Tahoma,Arial,sans-serif;
+  background:radial-gradient(circle at 70% 20%,#2a1d07 0%,#09090e 60%)}
+#app{position:absolute;inset:0;display:flex}
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        }
+/* القائمة الجانبية */
+#sidebar{width:170px;height:100%;padding:50px 0;display:flex;flex-direction:column;align-items:center;gap:24px;
+  background:rgba(0,0,0,.45);border-left:1px solid rgba(212,175,55,.25)}
+.logo{font-size:30px;font-weight:bold;color:#d4af37;letter-spacing:3px;margin-bottom:20px;text-shadow:0 0 18px rgba(212,175,55,.5)}
+.nav{width:104px;height:104px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  font-size:38px;background:rgba(255,255,255,.06);border:1px solid rgba(212,175,55,.15);transition:all .25s}
+.nav small{font-size:13px;margin-top:4px;color:#bfb08a}
+.nav.focus{background:linear-gradient(135deg,#f5d77a,#b8860b);transform:scale(1.12);box-shadow:0 0 35px rgba(212,175,55,.7)}
+.nav.focus small{color:#111}
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            height: 100vh;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            padding: 40px 60px;
-            background-image: radial-gradient(circle at 10% 20%, rgba(255, 0, 51, 0.05) 0%, transparent 40%);
-        }
+/* المحتوى */
+#main{flex:1;padding:50px 60px;overflow:hidden;position:relative}
+h1{font-size:46px;color:#f0d77b;margin-bottom:30px;text-shadow:0 0 14px rgba(212,175,55,.35)}
+#grid{display:flex;flex-wrap:wrap;gap:30px;padding:14px}
+.card{width:260px;height:380px;border-radius:18px;padding:20px;display:flex;flex-direction:column;justify-content:flex-end;
+  position:relative;overflow:hidden;border:1px solid rgba(212,175,55,.2);transition:transform .25s,box-shadow .25s}
+.card .play{position:absolute;top:42%;left:50%;transform:translate(-50%,-50%);font-size:62px;opacity:.75;color:#f0d77b}
+.card .t{font-size:22px;font-weight:bold;color:#fff}
+.card .s{font-size:14px;color:#d4af37;margin-top:6px}
+.card.focus{transform:scale(1.08);box-shadow:0 0 0 4px #d4af37,0 0 45px rgba(212,175,55,.65);z-index:2}
+.empty{font-size:26px;color:#bfb08a}
 
-        /* رأس القائمة */
-        .tv-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 40px;
-        }
-
-        .logo-area {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .logo-area h1 {
-            font-size: 28px;
-            font-weight: 800;
-            letter-spacing: 2px;
-            color: var(--text-main);
-        }
-
-        .logo-area h1 span {
-            color: var(--accent-red);
-            text-shadow: 0 0 15px var(--accent-glow);
-        }
-
-        .status-bar {
-            display: flex;
-            gap: 20px;
-            font-size: 16px;
-            color: var(--text-muted);
-        }
-
-        /* شبكة التطبيقات (Grid) */
-        .apps-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 25px;
-            flex-grow: 1;
-            align-content: start;
-        }
-
-        .app-card {
-            background: var(--card-bg);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 20px;
-            padding: 30px 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.25s ease;
-            backdrop-filter: blur(12px);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .app-card::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, rgba(255,0,51,0.1), transparent);
-            opacity: 0;
-            transition: opacity 0.25s;
-        }
-
-        .app-card:hover, .app-card:focus {
-            border-color: var(--accent-red);
-            transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 10px 30px var(--accent-glow);
-            outline: none;
-        }
-
-        .app-card:hover::before {
-            opacity: 1;
-        }
-
-        .app-icon {
-            font-size: 48px;
-            margin-bottom: 15px;
-            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
-        }
-
-        .app-title {
-            font-size: 18px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-        }
-
-        /* نافذة المشغل / التطبيق المنبثقة (Modal) */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.92);
-            z-index: 1000;
-            padding: 40px;
-            flex-direction: column;
-            backdrop-filter: blur(20px);
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .modal-title {
-            font-size: 22px;
-            font-weight: bold;
-            color: var(--text-main);
-        }
-
-        .close-btn {
-            background: var(--accent-red);
-            color: white;
-            border: none;
-            padding: 10px 25px;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.2s;
-            box-shadow: 0 0 15px var(--accent-glow);
-        }
-
-        .close-btn:hover {
-            opacity: 0.85;
-            transform: scale(1.05);
-        }
-
-        .browser-container {
-            flex-grow: 1;
-            background: #111;
-            border-radius: 16px;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            position: relative;
-        }
-
-        .browser-container iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        .fallback-msg {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background: #0a0a0c;
-            text-align: center;
-            padding: 20px;
-            z-index: 1;
-        }
-
-        .fallback-msg p {
-            margin-bottom: 15px;
-            color: var(--text-muted);
-            font-size: 16px;
-        }
-
-        .external-link {
-            background: var(--accent-red);
-            color: white;
-            text-decoration: none;
-            padding: 12px 25px;
-            border-radius: 10px;
-            font-weight: bold;
-            box-shadow: 0 0 20px var(--accent-glow);
-        }
-    </style>
+/* المشغل */
+#player{position:absolute;inset:0;background:#000;display:none;z-index:10}
+#video{width:100%;height:100%;background:#000}
+#hud{position:absolute;bottom:40px;left:60px;right:60px;padding:18px 28px;border-radius:14px;
+  background:rgba(0,0,0,.65);border:1px solid rgba(212,175,55,.4);font-size:24px;color:#f0d77b;display:none}
+</style>
 </head>
 <body>
+<div id="app">
+  <div id="sidebar">
+    <div class="logo">LUXE</div>
+    <div id="menu"></div>
+  </div>
+  <div id="main">
+    <h1 id="title"></h1>
+    <div id="grid"></div>
+  </div>
+</div>
 
-    <!-- الهيدر -->
-    <div class="tv-header">
-        <div class="logo-area">
-            <h1>SLAX<span>TV</span> OS</h1>
-        </div>
-        <div class="status-bar">
-            <span id="clock">00:00</span>
-            <span>⚡ النظام جاهز</span>
-        </div>
-    </div>
+<div id="player">
+  <video id="video" preload="auto"></video>
+  <div id="hud"></div>
+</div>
 
-    <!-- شبكة التطبيقات -->
-    <div class="apps-grid">
-        <!-- تطبيق موقع عشق (مسلسلات تركية) -->
-        <div class="app-card" onclick="openApp('عشق - الحفرة (Çukur)', 'https://e.3cktv.com/video/cukur-dubbed-ep-54/')">
-            <div class="app-icon">🎬</div>
-            <div class="app-title">موقع عشق (تركيا)</div>
-        </div>
+<script>
+/* ===== الإعدادات: عدّل هنا ===== */
+var CATS = [
+  {id:'home',     icon:'🏠', name:'الرئيسية'},
+  {id:'movies',   icon:'🎬', name:'الأفلام'},
+  {id:'series',   icon:'📺', name:'المسلسلات'},
+  {id:'fav',      icon:'⭐', name:'المفضلة'},
+  {id:'settings', icon:'⚙️', name:'الإعدادات'}
+];
 
-        <!-- تطبيق يوتيوب -->
-        <div class="app-card" onclick="openApp('يوتيوب', 'https://www.youtube.com/embed/live_stream?channel=...')">
-            <div class="app-icon">▶️</div>
-            <div class="app-title">يوتيوب</div>
-        </div>
+// ضع هنا محتواك الخاص (mp4 أو رابط مباشر مرخّص لك)
+var CONTENT = [
+  {title:'فيلم تجريبي 1', sub:'فيلم • 2024', cat:'movies', url:'https://example.com/movie1.mp4', bg:'linear-gradient(160deg,#5a3d10,#0c0c12)'},
+  {title:'فيلم تجريبي 2', sub:'فيلم • 2023', cat:'movies', url:'https://example.com/movie2.mp4', bg:'linear-gradient(160deg,#1d3550,#0c0c12)'},
+  {title:'مسلسل تجريبي',  sub:'حلقة 1',      cat:'series', url:'https://example.com/ep1.mp4',    bg:'linear-gradient(160deg,#3b1d4a,#0c0c12)'},
+  {title:'مسلسل تجريبي 2',sub:'حلقة 2',      cat:'series', url:'https://example.com/ep2.mp4',    bg:'linear-gradient(160deg,#1d4a33,#0c0c12)'}
+];
+/* =============================== */
 
-        <!-- تطبيق نتفليكس -->
-        <div class="app-card" onclick="openApp('نتفليكس', 'https://www.netflix.com')">
-            <div class="app-icon">🍿</div>
-            <div class="app-title">نتفليكس</div>
-        </div>
+var current = 'home';
+var focusList = [];
+var fi = 0;
+var playerOpen = false;
+var hudTimer = null;
 
-        <!-- تطبيق سكريبتات / أدوات -->
-        <div class="app-card" onclick="alert('قسم السكريبتات والأدوات قيد التطوير بواسطة سلاكس!')">
-            <div class="app-icon">⚡</div>
-            <div class="app-title">SLAX Hub</div>
-        </div>
+function $(id){ return document.getElementById(id); }
 
-        <!-- ألعاب / تصفح -->
-        <div class="app-card" onclick="openApp('متصفح الويب', 'https://www.google.com')">
-            <div class="app-icon">🌐</div>
-            <div class="app-title">متصفح الويب</div>
-        </div>
+function buildMenu(){
+  var menu = $('menu');
+  menu.innerHTML = '';
+  for (var i = 0; i < CATS.length; i++) {
+    menu.appendChild(makeNav(CATS[i]));
+  }
+}
 
-        <div class="app-card" onclick="alert('النظام يعمل بثبات OLED Dark Mode.')">
-            <div class="app-icon">⚙️</div>
-            <div class="app-title">الإعدادات</div>
-        </div>
-    </div>
+function makeNav(c){
+  var d = document.createElement('div');
+  d.className = 'nav focusable';
+  d.innerHTML = '<span>' + c.icon + '</span><small>' + c.name + '</small>';
+  d._action = function(){ setCat(c.id); };
+  return d;
+}
 
-    <!-- نافذة عرض التطبيق (Modal) -->
-    <div class="modal-overlay" id="appModal">
-        <div class="modal-header">
-            <div class="modal-title" id="modalTitle">عنوان التطبيق</div>
-            <button class="close-btn" onclick="closeApp()">إغلاق ✕</button>
-        </div>
-        <div class="browser-container" id="browserContainer">
-            <!-- رسالة تحذيرية في حال منع الموقع للعرض داخل الـ Iframe -->
-            <div class="fallback-msg" id="fallbackMsg">
-                <p>بعض مواقع البث تمنع العرض المباشر داخل النوافذ للحماية.</p>
-                <a id="directLink" href="#" target="_blank" class="external-link">افتح الموقع بشاشة كاملة ↗</a>
-            </div>
-            <iframe id="appFrame" src="" onload="hideFallback()"></iframe>
-        </div>
-    </div>
+function makeCard(item){
+  var d = document.createElement('div');
+  d.className = 'card focusable';
+  d.style.background = item.bg;
+  d.innerHTML = '<div class="play">▶</div><div class="t">' + item.title + '</div><div class="s">' + item.sub + '</div>';
+  d._action = function(){ openPlayer(item); };
+  return d;
+}
 
-    <script>
-        // تحديث الساعة
-        setInterval(() => {
-            const now = new Date();
-            document.getElementById('clock').innerText = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-        }, 1000);
+function setCat(id){
+  current = id;
+  var names = {home:'الرئيسية', movies:'الأفلام', series:'المسلسلات', fav:'المفضلة', settings:'الإعدادات'};
+  $('title').innerHTML = names[id] || '';
+  renderGrid();
+  // الانتقال تلقائياً لأول بطاقة
+  refreshFocus(0, true);
+}
 
-        // فتح التطبيق
-        function openApp(title, url) {
-            document.getElementById('modalTitle').innerText = title;
-            document.getElementById('directLink').href = url;
-            document.getElementById('fallbackMsg').style.display = 'flex';
-            document.getElementById('appFrame').src = url;
-            document.getElementById('appModal').style.display = 'flex';
-        }
+function renderGrid(){
+  var g = $('grid');
+  g.innerHTML = '';
+  var count = 0;
+  for (var i = 0; i < CONTENT.length; i++) {
+    var item = CONTENT[i];
+    if (current === 'home' || item.cat === current) {
+      g.appendChild(makeCard(item));
+      count++;
+    }
+  }
+  if (count === 0) {
+    g.innerHTML = '<p class="empty">لا يوجد محتوى هنا بعد</p>';
+  }
+}
 
-        // إخفاء التحذير إذا نجح تحميل الصفحة داخل الإطار
-        function hideFallback() {
-            setTimeout(() => {
-                // ملاحظة: إذا حظر الموقع الـ iframe سيظهر زر الفتح الخارجي
-                document.getElementById('fallbackMsg').style.display = 'none';
-            }, 1000);
-        }
+// يجمع كل العناصر القابلة للتركيز ويحدد الجديد
+function refreshFocus(index, preferCard){
+  var old = focusList[fi];
+  if (old) old.classList.remove('focus');
 
-        // إغلاق التطبيق
-        function closeApp() {
-            document.getElementById('appModal').style.display = 'none';
-            document.getElementById('appFrame').src = '';
-        }
-    </script>
+  focusList = Array.prototype.slice.call(document.querySelectorAll('.focusable'));
+  if (!focusList.length) return;
+
+  var idx = index;
+  if (preferCard) {
+    for (var i = 0; i < focusList.length; i++) {
+      if (focusList[i].className.indexOf('card') !== -1) { idx = i; break; }
+    }
+  }
+  setFocus(idx);
+}
+
+function setFocus(i){
+  if (i < 0 || i >= focusList.length) return;
+  if (focusList[fi]) focusList[fi].classList.remove('focus');
+  fi = i;
+  focusList[fi].classList.add('focus');
+  try { focusList[fi].scrollIntoView({block:'nearest', inline:'nearest'}); } catch(e){}
+}
+
+// التنقل بالأسهم حسب الموقع الفعلي على الشاشة
+function move(dir){
+  var cur = focusList[fi];
+  if (!cur) return;
+  var r = cur.getBoundingClientRect();
+  var cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+  var best = -1, bestScore = Infinity;
+
+  for (var i = 0; i < focusList.length; i++) {
+    if (i === fi) continue;
+    var q = focusList[i].getBoundingClientRect();
+    var dx = (q.left + q.width / 2) - cx;
+    var dy = (q.top + q.height / 2) - cy;
+    var ok, main, side;
+
+    if (dir === 'R')      { ok = dx > 5;  main = dx;  side = Math.abs(dy); }
+    else if (dir === 'L') { ok = dx < -5; main = -dx; side = Math.abs(dy); }
+    else if (dir === 'D') { ok = dy > 5;  main = dy;  side = Math.abs(dx); }
+    else                  { ok = dy < -5; main = -dy; side = Math.abs(dx); }
+
+    if (!ok) continue;
+    var score = main + side * 2;
+    if (score < bestScore) { bestScore = score; best = i; }
+  }
+  if (best >= 0) setFocus(best);
+}
+
+/* ===== المشغل ===== */
+function openPlayer(item){
+  playerOpen = true;
+  var v = $('video');
+  v.src = item.url;
+  $('player').style.display = 'block';
+  v.play();
+  showHud(item.title + ' — Enter: تشغيل/إيقاف | ◀ ▶: 10 ثواني | ▲ ▼: الصوت | O: رجوع');
+}
+
+function closePlayer(){
+  var v = $('video');
+  v.pause();
+  v.removeAttribute('src');
+  v.load();
+  $('player').style.display = 'none';
+  $('hud').style.display = 'none';
+  playerOpen = false;
+}
+
+function fmt(s){
+  if (!isFinite(s) || s < 0) s = 0;
+  var m = Math.floor(s / 60), sec = Math.floor(s % 60);
+  return (m < 10 ? '0' : '') + m + ':' + (sec < 10 ? '0' : '') + sec;
+}
+
+function showHud(text){
+  var v = $('video');
+  var extra = ' — ' + fmt(v.currentTime) + ' / ' + fmt(v.duration);
+  $('hud').innerHTML = text + extra;
+  $('hud').style.display = 'block';
+  clearTimeout(hudTimer);
+  hudTimer = setTimeout(function(){ $('hud').style.display = 'none'; }, 3000);
+}
+
+function handlePlayer(k){
+  var v = $('video');
+  if (k === 13) {                       // Enter / X
+    if (v.paused) v.play(); else v.pause();
+    showHud(v.paused ? '⏸ متوقف' : '▶ يعمل');
+  }
+  else if (k === 37) { v.currentTime -= 10; showHud('⏪ 10 ثواني'); }
+  else if (k === 39) { v.currentTime += 10; showHud('⏩ 10 ثواني'); }
+  else if (k === 38) { v.volume = Math.min(1, v.volume + 0.1); showHud('🔊 ' + Math.round(v.volume * 100) + '%'); }
+  else if (k === 40) { v.volume = Math.max(0, v.volume - 0.1); showHud('🔉 ' + Math.round(v.volume * 100) + '%'); }
+  else if (k === 8 || k === 27 || k === 461 || k === 10009) { closePlayer(); } // O / Back
+}
+
+/* ===== التحكم ===== */
+document.onkeydown = function(e){
+  var k = e.keyCode;
+  if (playerOpen) { handlePlayer(k); return false; }
+
+  if      (k === 37) move('L');
+  else if (k === 39) move('R');
+  else if (k === 38) move('U');
+  else if (k === 40) move('D');
+  else if (k === 13) {                  // Enter / X
+    var el = focusList[fi];
+    if (el && el._action) el._action();
+  }
+  else return true;
+  return false;
+};
+
+window.onload = function(){
+  buildMenu();
+  setCat('home');
+  // تعيين التركيز على القائمة أولاً (زر الرئيسية)
+  refreshFocus(0, false);
+};
+</script>
 </body>
 </html>
